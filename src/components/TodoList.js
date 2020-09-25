@@ -3,8 +3,7 @@ import Todo from './Todo';
 
 class TodoList extends Component {
   render() {
-    const { todos } = this.props;
-    
+    const todos = this.props.todos;
     return (
       <div>
         <ul>

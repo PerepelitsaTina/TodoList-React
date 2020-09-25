@@ -21,10 +21,10 @@ class CreateTodo extends Component {
       value: '',
     });
   }
-
   render() {
     return (
       <form 
+      className="todo-form"
       onSubmit={this.handleSubmit}  
       >
         <input 

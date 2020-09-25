@@ -17,36 +17,59 @@ h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: inherit;}
 /*--------------------*/
 
 body {
+  width: 100%;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #e6f7ff;
-
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 #root {
+  width: 100%;
   display: flex;
   justify-content: center;
 }
 
+.head-title {
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  font-size: 90px;
+  font-style: italic;
+  color: rebeccapurple;
+  opacity: 0.3;
+  margin-top: 20px;
+}
+
 .todos {
-  width: 600px;
-  max-width: 100%;
+  max-width: 600px;
+  width: 100%;
   background-color: lavender;
-  margin-top: 50px;
+  margin-top: 5px;
   padding: 25px;
 }
 
+.header {
+  display: flex;
+}
+
+.main-switch {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid rebeccapurple;
+  cursor: pointer; 
+  margin-right: 10px;
+  align-self: center;
+  transform: translateY(-50%);
+}
+
 .creating-todo {
-  width: 100%;
+  display: block;
   font-size: 25px;
   font-style: italic;
   padding: 5px 10px;
@@ -96,9 +119,54 @@ code {
 }
 
 .close-todo {
+  visibility: hidden;
   color: crimson;
   flex: 0 0 auto;
   margin-left: auto;
   cursor: pointer;
   text-decoration: none;
+}
+
+.todo-wrapper:hover .close-todo {
+  visibility: visible;
+}
+
+.footer {
+  margin-top: 30px;
+  color: #757779;
+  font-size: 16px;
+}
+
+.footer__info {
+  display: flex;
+  justify-content: space-between;
+}
+
+.clear-completed:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.footer__buttons {
+  margin-top: 25px;
+  display: flex;
+  justify-content: center;
+}
+
+.footer__btn {
+  color: #757779;
+  font-size: 16px;
+  background-color: transparent;
+}
+
+.footer__btn:nth-child(2) {
+  margin: 0 25px;
+}
+
+.footer__btn:hover {
+  text-decoration: underline rebeccapurple;
+}
+
+.active {
+  color: rebeccapurple;
 }
