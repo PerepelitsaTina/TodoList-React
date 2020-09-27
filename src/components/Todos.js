@@ -27,9 +27,30 @@ class Todos extends Component {
     });
   }
 
- 
+  changeTitle = (value) => {
+    console.log(value)
+    const mappedTodos = this.state.todos.map(todo => {
+      if (todo.edited) {
+        const edited = !todo.edited;
+        return {
+          ...todo,
+          title: value,
+          edited
+        };
+      }
+      return todo;
+    });
+    this.setState({
+      todos: mappedTodos
+    });
+  }
 
- 
+    checkEdited = () => {
+      return Boolean(this.state.todos.filter(todo => (
+        todo.edited
+      )).length);
+    }
+
   handleMark = (markedTodo) => {
     const mappedTodos = this.state.todos.map(todo => {
       if (todo.id === markedTodo.id) {
@@ -157,6 +178,8 @@ class Todos extends Component {
           handleDelete={this.handleDelete}
           handleEdit={this.handleEdit}
           handleChange={this.handleChange}
+          changeTitle={this.changeTitle}
+          checkEdited={this.checkEdited}
         />
         {todos.length > 0 &&
         <Footer 
