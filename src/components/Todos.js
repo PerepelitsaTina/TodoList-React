@@ -28,7 +28,6 @@ class Todos extends Component {
   }
 
   changeTitle = (value) => {
-    console.log(value)
     const mappedTodos = this.state.todos.map(todo => {
       if (todo.edited) {
         const edited = !todo.edited;
@@ -40,6 +39,13 @@ class Todos extends Component {
       }
       return todo;
     });
+    this.setState({
+      todos: mappedTodos
+    });
+  }
+
+  cancelEditing = () => {
+    const mappedTodos = this.state.todos.map(todo => ({ ...todo, edited: false }));
     this.setState({
       todos: mappedTodos
     });
@@ -180,6 +186,7 @@ class Todos extends Component {
           handleChange={this.handleChange}
           changeTitle={this.changeTitle}
           checkEdited={this.checkEdited}
+          cancelEditing={this.cancelEditing}
         />
         {todos.length > 0 &&
         <Footer 

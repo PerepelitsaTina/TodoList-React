@@ -4,10 +4,24 @@ class Todo extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: props.todo.title,
+      value: '',
     };
   }
 
+  componentDidMount() {
+    this.setState({
+      value: this.props.todo.title
+    })
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.todo.edited !== this.props.todo.edited) {
+      this.setState({
+        value: this.props.todo.title
+      })
+    }
+  } 
+  
   handleEdit = () => {
     this.props.handleEdit(this.props.todo);
   }
@@ -16,47 +30,24 @@ class Todo extends Component {
     this.setState({
       value: event.target.value
     });
-
-    console.log('handleChange')
   }
   
   handleSubmitChanges = (event) => {
     event.preventDefault();
     this.props.changeTitle(this.state.value);
     this.setState({
-      value: ''
+      value: this.props.todo.title
     });
   }
 
   handleClick = (event) => {
-    if (!event.target.childNodes.length) return;
+    if (!event.target.childNodes.length) return;    // Если мы нажали на активный input 
     
-    const isEdited = this.props.checkEdited()
-    if (!isEdited) return;    
+    const isEdited = this.props.checkEdited()  
+    if (!isEdited) return;    // Если никакая тудушка не редактируется 
     
-    // console.log(this.props.todo.title)
-    this.props.changeTitle(this.props.todo.title);
-    console.log(this.props.todo.title);
-    
-    setTimeout(() => {
-      this.setState({
-        value: this.props.todo.title
-      }, () => console.log(this.state))
-    }, 500);
+    this.props.cancelEditing();   // Отмена режима редактирования без каких-либо изменений 
   }
-
-  handleBlur = (e) => {
-    // const handler = (event) => {
-    //   console.log(event.target.id)
-
-    //   document.removeEventListener('click', handler)
-    // }
-    // document.addEventListener('click', handler );
-
-
-  }
-
-
 
   render() {
     const { handleMark, todo, handleDelete } = this.props;
@@ -64,8 +55,8 @@ class Todo extends Component {
       <div className="todo-wrapper" id={todo.id} onClick={this.handleClick}>
         <li className={`todo-item ${todo.completed === true ? "completed" : ""}`} id={todo.id}>
           <div 
-          className={`switch ${todo.completed === true ? "marked" : ""}`}
-          onClick={() => handleMark(todo)}
+            className={`switch ${todo.completed === true ? "marked" : ""}`}
+            onClick={() => handleMark(todo)}
           ></div>
           {!todo.edited && 
             <p 
@@ -76,24 +67,22 @@ class Todo extends Component {
             </p>
           }
           {todo.edited &&
-        
-          <form onSubmit={this.handleSubmitChanges}>
-            <input 
-              className="editing-todo"
-              autoFocus
-              type='text'
-              value={this.state.value}
-              onChange={this.handleChangeTodo}
-              // onBlur={this.handleBlur}
-            />
+          
+            <form onSubmit={this.handleSubmitChanges}>
+              <input 
+                className="editing-todo"
+                autoFocus
+                type='text'
+                value={this.state.value}
+                onChange={this.handleChangeTodo}
+              />
 
-          </form>
+            </form>
           }
         </li>
         <div 
         className="close-todo"
-        // onClick={() => handleDelete(todo)}
-        onClick={() => console.log(this.state)}
+        onClick={() => handleDelete(todo)}
         >&#10006;
         </div>
       </div>
