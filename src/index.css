@@ -46,8 +46,8 @@ code {
 }
 
 .todos {
-  max-width: 600px;
-  width: 100%;
+  max-width: 100%;
+  width: 600px;
   background-color: lavender;
   margin-top: 5px;
   padding: 25px;
@@ -68,7 +68,12 @@ code {
   transform: translateY(-50%);
 }
 
+.todo-form {
+  width: 100%;
+}
+
 .creating-todo {
+  width: 100%;
   display: block;
   font-size: 25px;
   font-style: italic;
@@ -77,13 +82,6 @@ code {
   margin-bottom: 15px;
 }
 
-.todo-wrapper {
-  display: flex;
-  font-size: 25px;
-  align-items: center;
-  align-content: center;
-  border-bottom: 2px dashed rebeccapurple;
-}
 
 .switch {
   position: absolute;
@@ -107,6 +105,10 @@ code {
   max-width: 100%;
   display: flex;
   padding: 10px 0;
+  font-size: 25px;
+  align-items: center;
+  align-content: center;
+  border-bottom: 2px dashed rebeccapurple;
 }
 
 .completed {
@@ -119,15 +121,15 @@ code {
 }
 
 .close-todo {
+  position: absolute;
+  right: 0;
   visibility: hidden;
   color: crimson;
-  flex: 0 0 auto;
-  margin-left: auto;
   cursor: pointer;
   text-decoration: none;
 }
 
-.todo-wrapper:hover .close-todo {
+.todo-item:hover .close-todo {
   visibility: visible;
 }
 
@@ -179,4 +181,10 @@ code {
   color: #8d6c93;
   background-color: transparent;
   border: 1px solid rebeccapurple;
+}
+
+@media (max-width: 600px) {
+  .todos {
+    width: 100%;
+  }
 }

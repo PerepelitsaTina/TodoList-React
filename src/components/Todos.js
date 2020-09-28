@@ -3,37 +3,37 @@ import CreateTodo from './CreateTodo';
 import TodoList from './TodoList';
 import Footer from './Footer';
 
-let count = 0;
 
 class Todos extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      todos: [],
-      status: 'all',
-      selectedAll: true
-    };
+  state = {
+    todos: [],
+    filter: 'all',
+    isAllSelected: false,
+    activeCount: 0,
+    completedCount: 0
   }
-  createTodo = (value) => {
+
+  count = 1;
+
+  createTodo = (title) => {
     let newTodo = {
-      id: count + 1,
-      title: value,
-      completed: false,
+      id: this.count++,
+      title,
+      isCompleted: false,
       edited: false
     };
-    count++;
     this.setState({
       todos: [...this.state.todos, newTodo],
     });
   }
 
-  changeTitle = (value) => {
+  changeTitle = (title) => {
     const mappedTodos = this.state.todos.map(todo => {
       if (todo.edited) {
         const edited = !todo.edited;
         return {
           ...todo,
-          title: value,
+          title,
           edited
         };
       }
@@ -42,106 +42,6 @@ class Todos extends Component {
     this.setState({
       todos: mappedTodos
     });
-  }
-
-  cancelEditing = () => {
-    const mappedTodos = this.state.todos.map(todo => ({ ...todo, edited: false }));
-    this.setState({
-      todos: mappedTodos
-    });
-  }
-
-    checkEdited = () => {
-      return Boolean(this.state.todos.filter(todo => (
-        todo.edited
-      )).length);
-    }
-
-  handleMark = (markedTodo) => {
-    const mappedTodos = this.state.todos.map(todo => {
-      if (todo.id === markedTodo.id) {
-        const completed = !todo.completed;
-        return {
-          ...todo,
-          completed
-        };
-      }
-      return todo;
-    });
-    this.setState({
-      todos: mappedTodos
-    });
-  }
-
-  handleMarkAll = () => {
-    const todos = this.state.todos;
-    let markedTodos;
-
-    if (this.state.selectedAll) {
-      markedTodos = todos.map((todo) => {
-        return {
-          ...todo,
-          completed: true
-        }
-      });
-    } else if (!this.state.selectedAll) {
-      markedTodos = todos.map((todo) => {
-        return {
-          ...todo,
-          completed: false
-        }
-      });
-    }
-    this.setState({
-      todos: markedTodos
-    });
-  }
-
-  handleSelectAll = () => {
-    const status = this.state.selectedAll;
-    this.handleMarkAll();
-    this.setState({
-      selectedAll: !status
-    })
-  }
-
-  handleDelete = (deletedTodo) => {
-    const filteredTodos = this.state.todos.filter(todo => {
-      return todo.id !== deletedTodo.id;
-    });
-
-    this.setState({
-      todos: filteredTodos
-    });
-  }
-  handleClearCompleted = () => {
-    const clearedTodos = this.state.todos.filter((todo) => (
-      todo.completed === false
-    ));
-    this.setState({
-      todos: clearedTodos
-    });
-  }
-  handleChangeStatus = (event) => {
-    this.setState({
-      status: event.target.id
-    });
-  }
-  filterCompleted = () => {
-    return this.state.todos.filter((todo) => todo.completed === true);
-  }
-  filterActive = () => {
-    return this.state.todos.filter((todo) => todo.completed === false);
-  }
-  showSortedTodos = (todos, status) => {
-    switch (status) {
-      case 'active':
-        return this.filterActive(todos);
-      case 'completed':
-        return this.filterCompleted(todos);
-      default:
-        return todos;
-    }
   }
 
   handleEdit = (editedTodo) => {
@@ -160,26 +60,124 @@ class Todos extends Component {
     });
   }
 
+  cancelEditing = () => {
+    const mappedTodos = this.state.todos.map(todo => ({ ...todo, edited: false }));
+    this.setState({
+      todos: mappedTodos
+    });
+  }
+
+  checkEdited = () => {
+    return Boolean(
+      this.state.todos.filter(todo => (
+        todo.edited
+      )).length
+    );
+  }
+
+  handleMark = (markedTodo) => {
+    const todos = this.state.todos.map(todo => {
+      if (todo.id === markedTodo.id) {
+        const isCompleted = !todo.isCompleted;
+        return {
+          ...todo,
+          isCompleted
+        };
+      }
+      return todo;
+    });
+    this.setState({
+      todos
+    });
+  }
+
+  handleMarkAll = () => {
+    const markedTodos = this.state.todos.map((todo) => {
+      return {
+        ...todo,
+        isCompleted: this.state.isAllSelected
+      }
+    });
+
+    this.setState({
+      todos: markedTodos
+    });
+  }
+
+  handleSelectAll = () => {
+    let isAllSelected = !this.state.isAllSelected;
+    this.setState({
+      isAllSelected
+    }, this.handleMarkAll);
+  }
+
+  handleDelete = (deletedTodo) => {
+    const filteredTodos = this.state.todos.filter(todo => {
+      return todo.id !== deletedTodo.id;
+    });
+
+    this.setState({
+      todos: filteredTodos
+    });
+  }
+
+  handleClearCompleted = () => {
+    const clearedTodos = this.state.todos.filter((todo) => (
+      !todo.isCompleted
+    ));
+    this.setState({
+      todos: clearedTodos
+    });
+  }
+
+  handleChangeFilter = (event) => {
+    this.setState({
+      filter: event.target.id
+    });
+  }
+
+  // filterCompleted = () => {
+  //   return this.state.todos.filter((todo) => todo.isCompleted);
+  // }
+
+  // filterActive = () => {
+  //   return this.state.todos.filter((todo) => !todo.isCompleted);
+  // }
+
+  // showSortedTodos = () => {
+  //   switch (this.state.filter) {
+  //     case 'active':
+  //       return this.filterActive();
+  //     case 'completed':
+  //       return this.filterCompleted();
+  //     default:
+  //       return this.state.todos;
+  //   }
+  // }
+
   render() {
-    const todos = this.showSortedTodos(this.state.todos, this.state.status);
-    const activeTodos = this.filterActive(this.state.todos);
-    const completedTodos = this.filterCompleted(this.state.todos);
+    const sortedTodos = this.state.todos.filter((todo) => {
+      if (this.state.filter === 'all') { return true; }
+      if (this.state.filter === 'active' && todo.isCompleted) { return true; }
+      if (this.state.filter === 'completed' && !todo.isCompleted) { return true; }
+      return false
+    });
+
     return (
       <div className="todos">
         <div className="header">
-          <div 
-            className={`main-switch ${this.state.selectedAll === true ? "marked" : ""}`}
+          <div
+            className={`main-switch ${this.state.isAllSelected ? "marked" : ""}`}
             onClick={this.handleSelectAll}
-          >
-          </div>
+          />
           <CreateTodo
             todos={todos}
-            add={this.createTodo}
+            createTodo={this.createTodo}
             handleChange={this.handleChange}
           />
         </div>
         <TodoList
-          todos={todos}
+          todos={sortedTodos}
           handleMark={this.handleMark}
           handleDelete={this.handleDelete}
           handleEdit={this.handleEdit}
@@ -189,16 +187,17 @@ class Todos extends Component {
           cancelEditing={this.cancelEditing}
         />
         {todos.length > 0 &&
-        <Footer 
-          status={this.state.status}
-          activeTodos={activeTodos}
-          completedTodos={completedTodos}
-          handleChangeStatus={this.handleChangeStatus}
-          handleClearCompleted={this.handleClearCompleted}          
-        />}
+          <Footer
+            filter={this.state.filter}
+            activeTodos={activeTodos}
+            completedTodos={completedTodos}
+            handleChangeFilter={this.handleChangeFilter}
+            handleClearCompleted={this.handleClearCompleted}
+          />}
       </div>
     );
   }
 }
+
 
 export default Todos;

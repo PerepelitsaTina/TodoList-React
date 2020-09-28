@@ -16,11 +16,14 @@ class CreateTodo extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    this.props.add(this.state.value);
+    if (this.state.value.length > 0) {
+      this.props.createTodo(this.state.value);
+    }
     this.setState({
       value: '',
     });
   }
+
   render() {
     return (
       <form 
