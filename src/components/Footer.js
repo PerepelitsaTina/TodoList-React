@@ -1,49 +1,39 @@
 import React, { Component } from 'react';
+import FilterButton from './FilterButton';
 
 class Footer extends Component {
   render() {
-    const { handleChangeFilter, handleClearCompleted, activeCount, completedCount } = this.props;
+    const { setFilter, activeCounter, completedCounter, filter, handleClearCompleted } = this.props;
+
     return (
-      <div 
-        className="footer"
-      >
-        <div 
-          className="footer__info"
-        >
+      <div className="footer">
+        <div className="footer__info">
           <p>
-            {activeCount} {activeCount > 1 ? 'items' : 'item'} left
+            {activeCounter} {activeCounter > 1 ? 'items' : 'item'} left
           </p>
           <p
             className="clear-completed"
-            onClick={() => handleClearCompleted()}
+            onClick={handleClearCompleted}
           >
-            Clear all completed: {completedCount}
+            Clear all completed: {completedCounter}
           </p>
         </div>
-        <div 
-          className="footer__buttons"
-        >
-          <button
-            className={`footer__btn ${this.props.filter === 'all' ? "active" : ""}`}
-            id="all"
-            onClick={handleChangeFilter}
-          >
-            All
-          </button>
-          <button
-            className={`footer__btn ${this.props.filter === 'active' ? "active" : ""}`}
-            id="active"
-            onClick={handleChangeFilter}
-          >
-            Active
-          </button>
-          <button
-            className={`footer__btn ${this.props.filter === 'completed' ? "active" : ""}`}
-            id="completed"
-            onClick={handleChangeFilter}
-          >
-            Completed
-          </button>
+        <div className="footer__buttons">
+          <FilterButton
+            buttonName="all"
+            setFilter={setFilter}
+            filter={filter}
+          />
+          <FilterButton
+            buttonName="active"
+            setFilter={setFilter}
+            filter={filter}
+          />
+          <FilterButton
+            buttonName="completed"
+            setFilter={setFilter}
+            filter={filter}
+          />
         </div>
       </div>
     );

@@ -62,7 +62,7 @@ code {
   height: 20px;
   border-radius: 50%;
   border: 2px solid rebeccapurple;
-  cursor: pointer; 
+  cursor: pointer;
   margin-right: 10px;
   align-self: center;
   transform: translateY(-50%);
@@ -81,7 +81,6 @@ code {
   border: 2px solid rebeccapurple;
   margin-bottom: 15px;
 }
-
 
 .switch {
   position: absolute;
@@ -153,16 +152,15 @@ code {
   margin-top: 25px;
   display: flex;
   justify-content: center;
+  margin-right: 40px;
 }
 
 .footer__btn {
   color: #757779;
   font-size: 16px;
   background-color: transparent;
-}
-
-.footer__btn:nth-child(2) {
-  margin: 0 25px;
+  padding: 0 10px;
+  text-transform: capitalize;
 }
 
 .footer__btn:hover {

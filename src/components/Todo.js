@@ -8,7 +8,6 @@ class Todo extends Component {
     };
   }
 
-
   componentDidUpdate(prevProps) {
     if (prevProps.todo.edited !== this.props.todo.edited) {
       this.setState({
@@ -35,27 +34,56 @@ class Todo extends Component {
     });
   }
 
-  handleClick = (event) => {
+  handleEscape = (event) => {
+    if (event.key === 'Escape') {
+      const isEdited = this.props.checkEdited()
+      if (!isEdited) {
+        return
+      };   
+      this.props.cancelEditing();  
+    }
+  }
+
+  handleTest = (event) => {
+    // if (event.target && !event.target.childNodes.length) return;
+
+    // const isEdited = this.props.checkEdited()
+    
+    // if (!isEdited) {
+    //   return
+    // }; 
+
+    // if ((event.key && event.key === 'Escape') || (
+    //   event.target
+    // )) {
+    //   this.props.cancelEditing();  
+    // 
+       
+  }
+
+  handleCancelEditing = (event) => { 
     if (!event.target.childNodes.length) {
       return;
     }    // Если мы нажали на активный input 
     const isEdited = this.props.checkEdited()
-    if (!isEdited) return;    // Если никакая тудушка не редактируется 
+    if (!isEdited) {
+      return
+    };    // Если никакая тудушка не редактируется 
     this.props.cancelEditing();   // Отмена режима редактирования без каких-либо изменений 
   }
 
   render() {
-    const { handleMark, todo, handleDelete } = this.props;
+    const { handleDoneTodo, todo, handleDelete } = this.props;
     return (
       <li
         className={`todo-item ${todo.isCompleted ? "completed" : ""}`}
         id={todo.id}
-        onClick={this.handleClick}
+        onClick={this.handleCancelEditing}
       >
         <div
           className={`switch ${todo.isCompleted ? "marked" : ""}`}
-          onClick={() => handleMark(todo)}
-        ></div>
+          onClick={() => handleDoneTodo(todo)}
+        />
         {!todo.edited &&
           <p
             className="todo-text"
@@ -65,14 +93,14 @@ class Todo extends Component {
           </p>
         }
         {todo.edited &&
-          <form
-            onSubmit={this.handleSubmitChanges}>
+          <form onSubmit={this.handleSubmitChanges}>
             <input
               className="editing-todo"
               autoFocus
               type='text'
               value={this.state.value}
               onChange={this.handleChangeTodo}
+              onKeyDown={this.handleEscape}
             />
           </form>
         }
