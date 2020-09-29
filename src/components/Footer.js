@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 class Footer extends Component {
   render() {
-    const { handleChangeFilter, handleClearCompleted, activeTodos, completedTodos } = this.props;
+    const { handleChangeFilter, handleClearCompleted, activeCount, completedCount } = this.props;
     return (
       <div 
         className="footer"
@@ -11,13 +11,13 @@ class Footer extends Component {
           className="footer__info"
         >
           <p>
-            {activeTodos.length} {activeTodos.length > 1 ? 'items' : 'item'} left
+            {activeCount} {activeCount > 1 ? 'items' : 'item'} left
           </p>
           <p
             className="clear-completed"
             onClick={() => handleClearCompleted()}
           >
-            Clear all completed: {completedTodos.length}
+            Clear all completed: {completedCount}
           </p>
         </div>
         <div 

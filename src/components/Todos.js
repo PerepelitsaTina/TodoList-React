@@ -113,6 +113,17 @@ class Todos extends Component {
 
   handleDelete = (deletedTodo) => {
     const filteredTodos = this.state.todos.filter(todo => {
+      if (deletedTodo.isCompleted) {
+        let completedCount = this.state.completedCount;
+        this.setState({
+          completedCount: this.setState.completedCount - 1
+        });
+      } else {
+        let activeCount = this.state.activeCount;
+        this.setState({
+          activeCount: this.state.activeCount - 1
+        });
+      }
       return todo.id !== deletedTodo.id;
     });
 
@@ -136,32 +147,31 @@ class Todos extends Component {
     });
   }
 
-  // filterCompleted = () => {
-  //   return this.state.todos.filter((todo) => todo.isCompleted);
-  // }
-
-  // filterActive = () => {
-  //   return this.state.todos.filter((todo) => !todo.isCompleted);
-  // }
-
-  // showSortedTodos = () => {
-  //   switch (this.state.filter) {
-  //     case 'active':
-  //       return this.filterActive();
-  //     case 'completed':
-  //       return this.filterCompleted();
-  //     default:
-  //       return this.state.todos;
-  //   }
-  // }
-
-  render() {
-    const sortedTodos = this.state.todos.filter((todo) => {
-      if (this.state.filter === 'all') { return true; }
-      if (this.state.filter === 'active' && todo.isCompleted) { return true; }
-      if (this.state.filter === 'completed' && !todo.isCompleted) { return true; }
+  showFilteredTodos = () => {
+    return this.state.todos.filter((todo) => {
+      // здесь ты считаешь каунты
+      if (this.state.filter === 'active') {
+        this.setState({
+          activeCount: this.setState.activeCount + 1
+        });
+      }
+      if (this.state.filter === 'completed') { 
+        this.setState({
+          completedCount: this.setState.completedCount + 1
+        });
+      }
+      // а здесь уже основная логика функции
+      if (this.state.filter === 'all') { 
+        return true;
+      }
+      if (this.state.filter === 'active' && !todo.isCompleted) { return true }
+      if (this.state.filter === 'completed' && todo.isCompleted) { return true }
       return false
     });
+  }
+
+  render() {
+    const sortedTodos = this.showFilteredTodos();
 
     return (
       <div className="todos">
@@ -171,7 +181,7 @@ class Todos extends Component {
             onClick={this.handleSelectAll}
           />
           <CreateTodo
-            todos={todos}
+            todos={this.state.todos}
             createTodo={this.createTodo}
             handleChange={this.handleChange}
           />
@@ -186,11 +196,11 @@ class Todos extends Component {
           checkEdited={this.checkEdited}
           cancelEditing={this.cancelEditing}
         />
-        {todos.length > 0 &&
+        {this.state.todos.length > 0 &&
           <Footer
             filter={this.state.filter}
-            activeTodos={activeTodos}
-            completedTodos={completedTodos}
+            activeCount={this.state.activeCount}
+            completedCount={this.state.completedCount}
             handleChangeFilter={this.handleChangeFilter}
             handleClearCompleted={this.handleClearCompleted}
           />}
