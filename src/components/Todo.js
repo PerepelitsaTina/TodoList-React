@@ -9,24 +9,19 @@ class Todo extends Component {
     };
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.todo.edited !== this.props.todo.edited) {
-      this.setState({
-        value: this.props.todo.title
-      });
-    }
-  }
-
   handleDoneTodo = () => {
-    this.props.doneTodo(this.props.todo);
+    this.props.updateTodo({
+      ...this.props.todo,
+      isCompleted: !this.props.todo.isCompleted
+    });
   }
 
   handleDelete = () => {
     this.props.deleteTodo(this.props.todo);
   }
 
-  handleEdit = () => {
-    this.props.editTodo(this.props.todo);
+  handleSetEditedTodo = () => {
+    this.props.setEditedTodo(this.props.todo.id)
   }
 
   handleChangeTodo = (event) => {
@@ -37,27 +32,31 @@ class Todo extends Component {
 
   handleSubmitChanges = (event) => {
     event.preventDefault();
-    this.props.changeTitle(this.state.value);
-    this.setState({
-      value: this.props.todo.title
+
+    this.props.updateTodo({
+      ...this.props.todo,
+      title: this.state.value
     });
+
+    this.cancelEditing();
   }
 
   handleCancelEscape = (event) => {
     if (event.key === 'Escape') {
-      this.props.cancelEditing();
+      this.cancelEditing();
     }
   }
 
-  handleCancelEditing = () => {
-    this.props.cancelEditing();
+  cancelEditing = () => {
+    this.props.setEditedTodo(null);
   }
 
   render() {
-    const { todo } = this.props;
+    const { todo, isEdited } = this.props;
     const itemClass = classnames({
       'todo-item': true,
-      'completed': todo.isCompleted
+      'completed': todo.isCompleted,
+      'edited': isEdited
     });
     const switchClass = classnames({
       'switch': true,
@@ -67,21 +66,24 @@ class Todo extends Component {
     return (
       <li
         className={itemClass}
-        onClick={this.handleCancelEditing}
+        onClick={this.cancelEditing}
+        onDoubleClick={this.handleSetEditedTodo}
       >
         <div
           className={switchClass}
           onClick={this.handleDoneTodo}
+          onDoubleClick={(e) => { e.stopPropagation() }}
         />
-        {!todo.edited &&
+
+        {!isEdited &&
           <p
             className="todo-text"
-            onDoubleClick={this.handleEdit}
           >
             {todo.title}
           </p>
         }
-        {todo.edited &&
+
+        {isEdited &&
           <form onSubmit={this.handleSubmitChanges}>
             <input
               onClick={(e) => { e.stopPropagation() }}

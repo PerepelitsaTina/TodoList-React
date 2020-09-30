@@ -10,70 +10,33 @@ class Todos extends Component {
   state = {
     todos: [],
     filter: 'all',
+    editedTodo: null
   }
 
   createTodo = (title) => {
     const newTodo = {
       id: uuidv4(),
       title,
-      isCompleted: false,
-      edited: false
+      isCompleted: false
     };
     this.setState({
       todos: [...this.state.todos, newTodo],
     });
   }
 
-  changeTitle = (title) => {
-    const mappedTodos = this.state.todos.map(todo => {
-      if (todo.edited) {
-        const edited = !todo.edited;
-        return {
-          ...todo,
-          title,
-          edited
-        };
-      }
-      return todo;
-    });
-    this.setState({
-      todos: mappedTodos
-    });
+  updateTodo = (todo) => {
+    this.setState((state) => ({
+      todos: state.todos.map((item) => {
+        if (item.id !== todo.id) { return item; }
+        return todo;
+      })
+    }));
   }
 
-  editTodo = (editedTodo) => {
-    const mappedTodos = this.state.todos.map(todo => {
-      if (todo.id === editedTodo.id) {
-        const edited = !todo.edited;
-        return {
-          ...todo,
-          edited
-        };
-      }
-      return todo;
-    });
+  setEditedTodo = (id) => {
     this.setState({
-      todos: mappedTodos
-    });
-  }
-
-  cancelEditing = () => {
-    const isEdited = this.checkEdited();
-    if (!isEdited) {
-      return
-    };
-    const mappedTodos = this.state.todos.map(todo => ({ ...todo, edited: false }));
-    this.setState({
-      todos: mappedTodos
-    });
-  }
-
-  checkEdited = () => {
-    return Boolean(
-      this.state.todos.filter(todo => (
-        todo.edited
-      )).length
-    );
+      editedTodo: id
+    })
   }
 
   doneTodo = (id) => {
@@ -92,16 +55,6 @@ class Todos extends Component {
     });
   }
 
-  // doneTodo = (id) => {
-  //   const todos = this.state.todos;
-  //   const index = this.state.todos.map(todo => todo.id).indexOf(id);
-  //   let isCompleted = !this.state.todos[index].isCompleted;
-  //   todos[index].isCompleted = isCompleted;
-  //   this.setState({
-  //     todos
-  //   });
-  // }
-
   handleDoneAll = () => {
     const { completedCounter } = this.showFilteredTodos();
     const isAllCompleted = this.state.todos.length === completedCounter;
@@ -111,7 +64,6 @@ class Todos extends Component {
         isCompleted: !isAllCompleted
       }
     });
-
     this.setState({
       todos: markedTodos
     });
@@ -169,7 +121,7 @@ class Todos extends Component {
     const switchClass = classnames({
       'main-switch': true,
       'marked': this.state.todos.length === completedCounter && this.state.todos.length !== 0
-    })
+    });
 
     return (
       <div className="todos">
@@ -181,22 +133,18 @@ class Todos extends Component {
 
           <CreateTodo
             createTodo={this.createTodo}
-            handleChange={this.handleChange}
           />
         </div>
 
         <ul>
           {todos.map(todo => (
             <Todo
-              key={todo.id}
-              todos={todos}
-              doneTodo={this.doneTodo}
-              deleteTodo={this.deleteTodo}
-              editTodo={this.editTodo}
-              handleChange={this.handleChange}
-              changeTitle={this.changeTitle}
-              cancelEditing={this.cancelEditing}
               todo={todo}
+              key={todo.id}
+              isEdited={this.state.editedTodo === todo.id}
+              setEditedTodo={this.setEditedTodo}
+              updateTodo={this.updateTodo}
+              deleteTodo={this.deleteTodo}
             />
           ))}
         </ul>
