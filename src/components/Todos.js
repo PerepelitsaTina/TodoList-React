@@ -13,6 +13,22 @@ class Todos extends Component {
     editedTodo: null
   }
 
+  componentDidMount = () => {
+    const savedTodos = localStorage.getItem('todos');
+    const savedFilter = localStorage.getItem('filter');
+    if (savedTodos !== null) {
+      this.setState({
+        todos: JSON.parse(savedTodos),
+        filter: savedFilter
+      })
+    }
+  }
+
+  componentDidUpdate = () => {
+    localStorage.setItem('todos', JSON.stringify(this.state.todos));
+    localStorage.setItem('filter', this.state.filter);
+  }
+
   createTodo = (title) => {
     const newTodo = {
       id: uuidv4(),
