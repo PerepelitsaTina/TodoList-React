@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import classnames from 'classnames'
 
 class Todo extends Component {
   constructor(props) {
@@ -16,8 +17,16 @@ class Todo extends Component {
     }
   }
 
+  handleDoneTodo = () => {
+    this.props.doneTodo(this.props.todo);
+  }
+
+  handleDelete = () => {
+    this.props.deleteTodo(this.props.todo);
+  }
+
   handleEdit = () => {
-    this.props.handleEdit(this.props.todo);
+    this.props.editTodo(this.props.todo);
   }
 
   handleChangeTodo = (event) => {
@@ -34,55 +43,35 @@ class Todo extends Component {
     });
   }
 
-  handleEscape = (event) => {
+  handleCancelEscape = (event) => {
     if (event.key === 'Escape') {
-      const isEdited = this.props.checkEdited()
-      if (!isEdited) {
-        return
-      };   
-      this.props.cancelEditing();  
+      this.props.cancelEditing();
     }
   }
 
-  handleTest = (event) => {
-    // if (event.target && !event.target.childNodes.length) return;
-
-    // const isEdited = this.props.checkEdited()
-    
-    // if (!isEdited) {
-    //   return
-    // }; 
-
-    // if ((event.key && event.key === 'Escape') || (
-    //   event.target
-    // )) {
-    //   this.props.cancelEditing();  
-    // 
-       
-  }
-
-  handleCancelEditing = (event) => { 
-    if (!event.target.childNodes.length) {
-      return;
-    }    // Если мы нажали на активный input 
-    const isEdited = this.props.checkEdited()
-    if (!isEdited) {
-      return
-    };    // Если никакая тудушка не редактируется 
-    this.props.cancelEditing();   // Отмена режима редактирования без каких-либо изменений 
+  handleCancelEditing = () => {
+    this.props.cancelEditing();
   }
 
   render() {
-    const { handleDoneTodo, todo, handleDelete } = this.props;
+    const { todo } = this.props;
+    const itemClass = classnames({
+      'todo-item': true,
+      'completed': todo.isCompleted
+    });
+    const switchClass = classnames({
+      'switch': true,
+      'marked': todo.isCompleted
+    })
+
     return (
       <li
-        className={`todo-item ${todo.isCompleted ? "completed" : ""}`}
-        id={todo.id}
+        className={itemClass}
         onClick={this.handleCancelEditing}
       >
         <div
-          className={`switch ${todo.isCompleted ? "marked" : ""}`}
-          onClick={() => handleDoneTodo(todo)}
+          className={switchClass}
+          onClick={this.handleDoneTodo}
         />
         {!todo.edited &&
           <p
@@ -95,21 +84,22 @@ class Todo extends Component {
         {todo.edited &&
           <form onSubmit={this.handleSubmitChanges}>
             <input
+              onClick={(e) => { e.stopPropagation() }}
               className="editing-todo"
               autoFocus
               type='text'
               value={this.state.value}
               onChange={this.handleChangeTodo}
-              onKeyDown={this.handleEscape}
+              onKeyDown={this.handleCancelEscape}
             />
           </form>
         }
         <div
           className="close-todo"
-          onClick={() => handleDelete(todo)}
+          onClick={this.handleDelete}
         >
-          &#10006;
-          </div>
+          {'✖'}
+        </div>
       </li>
     );
   }

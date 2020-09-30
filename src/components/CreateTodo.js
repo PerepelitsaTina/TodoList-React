@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
 
 class CreateTodo extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      value: '',
-    };
+  state = {
+    value: '',
   }
 
   handleChange = (event) => {
@@ -26,16 +23,16 @@ class CreateTodo extends Component {
 
   render() {
     return (
-      <form 
-      className="todo-form"
-      onSubmit={this.handleSubmit}  
+      <form
+        className="todo-form"
+        onSubmit={this.handleSubmit}
       >
-        <input 
-        className="creating-todo"
-        type='text'
-        placeholder='Add your todo here'
-        value={this.state.value}
-        onChange={this.handleChange}
+        <input
+          className="creating-todo"
+          type="text"
+          placeholder="Add your todo here"
+          value={this.state.value}
+          onChange={this.handleChange}
         />
       </form>
     );

@@ -1,17 +1,21 @@
-import React, { Component } from 'react';
+import React from 'react';
+import classnames from 'classnames'
 
-class FilterButton extends Component {
-  render() {
-    const { buttonName, setFilter, filter } = this.props;
-    return (
-      <button
-        className={`footer__btn ${filter === buttonName ? "active" : ""}`}
-        onClick={() => setFilter(buttonName)}
-      >
-        {buttonName}
-      </button>
-    );
-  }
+function FilterButton(props) {
+  const { value, children, setFilter, filter } = props;
+  const btnClass = classnames({
+    'footer__btn': true,
+    'active': filter === value
+  })
+
+  return (
+    <button
+      className={btnClass}
+      onClick={() => setFilter(value)}
+    >
+      {children}
+    </button>
+  );
 }
 
 export default FilterButton;
