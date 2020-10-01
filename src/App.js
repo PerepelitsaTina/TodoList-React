@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import Todos from './components/Todos';
 
 class App extends React.Component {
@@ -7,6 +6,7 @@ class App extends React.Component {
     return (
       <div>
         <p className="head-title">todolist</p>
+
         <Todos />
       </div>
     )

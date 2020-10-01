@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { store } from "../store";
+import { createTodo } from "../actions/index"
 
 class CreateTodo extends Component {
   state = {
@@ -13,11 +15,12 @@ class CreateTodo extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
+    console.log('111');
     if (this.state.value.length > 0) {
-      this.props.createTodo(this.state.value);
+      store.dispatch(createTodo(this.state.value));
     }
     this.setState({
-      value: '',
+      value: ''
     });
   }
 

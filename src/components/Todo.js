@@ -32,12 +32,10 @@ class Todo extends Component {
 
   handleSubmitChanges = (event) => {
     event.preventDefault();
-
     this.props.updateTodo({
       ...this.props.todo,
       title: this.state.value
     });
-
     this.cancelEditing();
   }
 
@@ -75,15 +73,15 @@ class Todo extends Component {
           onDoubleClick={(e) => { e.stopPropagation() }}
         />
 
-        {!isEdited &&
+        {!isEdited && (
           <p
             className="todo-text"
           >
             {todo.title}
           </p>
-        }
+        )}
 
-        {isEdited &&
+        {isEdited && (
           <form onSubmit={this.handleSubmitChanges}>
             <input
               onClick={(e) => { e.stopPropagation() }}
@@ -95,7 +93,8 @@ class Todo extends Component {
               onKeyDown={this.handleCancelEscape}
             />
           </form>
-        }
+        )}
+        
         <div
           className="close-todo"
           onClick={this.handleDelete}

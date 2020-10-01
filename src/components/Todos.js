@@ -6,107 +6,111 @@ import CreateTodo from './CreateTodo';
 import Todo from './Todo';
 import Footer from './Footer';
 
-class Todos extends Component {
-  state = {
-    todos: [],
-    filter: 'all',
-    editedTodo: null
+const storage = {
+  filter: {
+    key: 'filter',
+    get: function () {
+      try {
+        const data = JSON.parse(localStorage.getItem(this.key));
+        return data || 'all';
+      } catch (error) {
+        return 'all';
+      }
+    },
+    set: function (data) {
+      return localStorage.setItem(this.key, JSON.stringify(data));
+    }
+  },
+  todoList: {
+    key: 'todos',
+    get: function () {
+      try {
+        const data = JSON.parse(localStorage.getItem(this.key));
+        return data || [];
+      } catch (error) {
+        return [];
+      }
+    },
+    set: function (data) {
+      return localStorage.setItem(this.key, JSON.stringify(data));
+    }
   }
+};
 
-  componentDidMount = () => {
-    const savedTodos = localStorage.getItem('todos');
-    const savedFilter = localStorage.getItem('filter');
-    if (savedTodos !== null) {
-      this.setState({
-        todos: JSON.parse(savedTodos),
-        filter: savedFilter
-      })
+class Todos extends Component {
+  // state = {
+  //   todos: storage.todoList.get(),
+  //   filter: storage.filter.get(),
+  //   editedTodo: null
+  // }
+
+  componentDidUpdate = (prevProps, prevState) => {
+    if (this.state.todos !== prevState.todos) {
+      storage.todoList.set(this.state.todos);
+    }
+    if (this.state.filter !== prevState.filter) {
+      storage.filter.set(this.state.filter);
     }
   }
 
-  componentDidUpdate = () => {
-    localStorage.setItem('todos', JSON.stringify(this.state.todos));
-    localStorage.setItem('filter', this.state.filter);
-  }
-
-  createTodo = (title) => {
-    const newTodo = {
-      id: uuidv4(),
-      title,
-      isCompleted: false
-    };
-    this.setState({
-      todos: [...this.state.todos, newTodo],
-    });
-  }
+  // createTodo = (title) => {
+  //   const newTodo = {
+  //     id: uuidv4(),
+  //     title,
+  //     isCompleted: false
+  //   };
+  //   this.setState({
+  //     todos: [...this.state.todos, newTodo],
+  //   });
+  // }
 
   updateTodo = (todo) => {
     this.setState((state) => ({
       todos: state.todos.map((item) => {
-        if (item.id !== todo.id) { return item; }
+        if (item.id !== todo.id) {
+          return item;
+        }
         return todo;
       })
     }));
   }
 
-  setEditedTodo = (id) => {
-    this.setState({
-      editedTodo: id
-    })
-  }
+  // setEditedTodo = (editedTodo) => {
+  //   this.setState({ editedTodo });
+  // }
 
-  doneTodo = (id) => {
-    const todos = this.state.todos.map(todo => {
-      if (todo.id === id) {
-        const isCompleted = !todo.isCompleted;
-        return {
-          ...todo,
-          isCompleted
-        };
-      }
-      return todo;
-    });
-    this.setState({
-      todos
-    });
-  }
+  // handleDoneAll = () => {
+  //   const { completedCounter } = this.showFilteredTodos();
+  //   const isAllCompleted = this.state.todos.length === completedCounter;
+  //   const markedTodos = this.state.todos.map((todo) => {
+  //     return {
+  //       ...todo,
+  //       isCompleted: !isAllCompleted
+  //     }
+  //   });
+  //   this.setState({ todos: markedTodos });
+  // }
 
-  handleDoneAll = () => {
-    const { completedCounter } = this.showFilteredTodos();
-    const isAllCompleted = this.state.todos.length === completedCounter;
-    const markedTodos = this.state.todos.map((todo) => {
-      return {
-        ...todo,
-        isCompleted: !isAllCompleted
-      }
-    });
-    this.setState({
-      todos: markedTodos
-    });
-  }
+  // deleteTodo = (deletedTodo) => {
+  //   const filteredTodos = this.state.todos.filter(todo => {
+  //     return todo.id !== deletedTodo.id;
+  //   });
+  //   this.setState({
+  //     todos: filteredTodos
+  //   });
+  // }
 
-  deleteTodo = (deletedTodo) => {
-    const filteredTodos = this.state.todos.filter(todo => {
-      return todo.id !== deletedTodo.id;
-    });
-    this.setState({
-      todos: filteredTodos
-    });
-  }
+  // handleClearCompleted = () => {
+  //   const clearedTodos = this.state.todos.filter((todo) => (
+  //     !todo.isCompleted
+  //   ));
+  //   this.setState({
+  //     todos: clearedTodos
+  //   });
+  // }
 
-  handleClearCompleted = () => {
-    const clearedTodos = this.state.todos.filter((todo) => (
-      !todo.isCompleted
-    ));
-    this.setState({
-      todos: clearedTodos
-    });
-  }
-
-  setFilter = (value) => {
-    this.setState({
-      filter: value
-    });
+  setFilter = (filter) => {
+    this.setState({ filter });
   }
 
   showFilteredTodos = () => {
@@ -134,21 +138,23 @@ class Todos extends Component {
 
   render() {
     const { todos, activeCounter, completedCounter } = this.showFilteredTodos();
-    const switchClass = classnames({
-      'main-switch': true,
-      'marked': this.state.todos.length === completedCounter && this.state.todos.length !== 0
-    });
+    const switchClassNames = classnames(
+      'main-switch',
+      {
+        'marked': this.state.todos.length === completedCounter && this.state.todos.length !== 0
+      }
+    );
 
     return (
       <div className="todos">
         <div className="header">
           <div
-            className={switchClass}
+            className={switchClassNames}
             onClick={this.handleDoneAll}
           />
 
           <CreateTodo
-            createTodo={this.createTodo}
+            // createTodo={this.createTodo}
           />
         </div>
 

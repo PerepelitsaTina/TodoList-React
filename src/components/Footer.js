@@ -10,25 +10,12 @@ function Footer(props) {
     handleClearCompleted
   } = props;
 
-  const filterButtons = [
-    {
-      value: 'all',
-      label: 'All'
-    }, {
-      value: 'active',
-      label: 'Active'
-    }, {
-      value: 'completed',
-      label: 'Completed'
-    }
-  ];
-
   return (
     <footer className="footer">
       <div className="footer__info">
         <p>
           {activeCounter || 'No'} {activeCounter === 1 ? 'item' : 'items'} left
-          </p>
+        </p>
 
         <p
           className="clear-completed"
@@ -52,7 +39,19 @@ function Footer(props) {
       </div>
     </footer>
   );
-
 }
+
+const filterButtons = [
+  {
+    value: 'all',
+    label: 'All'
+  }, {
+    value: 'active',
+    label: 'Active'
+  }, {
+    value: 'completed',
+    label: 'Completed'
+  }
+];
 
 export default Footer;
