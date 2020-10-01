@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import uuidv4 from 'uuid/dist/v4'
 import classnames from 'classnames'
 
 import CreateTodo from './CreateTodo';
 import Todo from './Todo';
 import Footer from './Footer';
+import { connect } from 'react-redux';
 
 const storage = {
   filter: {
@@ -38,11 +38,11 @@ const storage = {
 };
 
 class Todos extends Component {
-  // state = {
-  //   todos: storage.todoList.get(),
-  //   filter: storage.filter.get(),
-  //   editedTodo: null
-  // }
+  state = {
+    todos: storage.todoList.get(),
+    filter: storage.filter.get(),
+    editedTodo: null
+  }
 
   componentDidUpdate = (prevProps, prevState) => {
     if (this.state.todos !== prevState.todos) {
@@ -52,17 +52,6 @@ class Todos extends Component {
       storage.filter.set(this.state.filter);
     }
   }
-
-  // createTodo = (title) => {
-  //   const newTodo = {
-  //     id: uuidv4(),
-  //     title,
-  //     isCompleted: false
-  //   };
-  //   this.setState({
-  //     todos: [...this.state.todos, newTodo],
-  //   });
-  // }
 
   updateTodo = (todo) => {
     this.setState((state) => ({

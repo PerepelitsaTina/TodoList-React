@@ -9,6 +9,7 @@ class Todo extends Component {
     };
   }
 
+  //Начать отсюда, добавить connect, import action 
   handleDoneTodo = () => {
     this.props.updateTodo({
       ...this.props.todo,

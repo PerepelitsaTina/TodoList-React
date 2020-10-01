@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { store } from "../store";
+import uuidv4 from 'uuid/dist/v4'
+import { connect } from 'react-redux';
 import { createTodo } from "../actions/index"
 
 class CreateTodo extends Component {
@@ -15,13 +16,14 @@ class CreateTodo extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    console.log('111');
+    const newTodo = {
+      id: uuidv4(),
+      title: this.state.value,
+      isCompleted: false
+    };
     if (this.state.value.length > 0) {
-      store.dispatch(createTodo(this.state.value));
+      this.props.createTodo(newTodo);
     }
-    this.setState({
-      value: ''
-    });
   }
 
   render() {
@@ -42,4 +44,12 @@ class CreateTodo extends Component {
   }
 }
 
-export default CreateTodo;
+const mapStateToProps = state => ({
+  todos: state.todos_store.todos
+});
+
+const mapDispatchToProps = dispatch => ({
+  createTodo: (todo) => dispatch(createTodo(todo))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(CreateTodo);
