@@ -2,15 +2,14 @@ import uuidv4 from 'uuid/dist/v4'
 
 import {
   CREATE_TODO,
-  EDIT_TODO,
   DELETE_TODO,
-  COMPLETE_TODO,
+  UPDATE_TODO,
   COMPLETE_ALL_TODOS,
   CLEAR_COMPLETED
-} from '../constants/actionTypes'
+} from '../actionTypes/actionTypes'
 
 const initialState = {
-  todos: [] 
+  todos: []
 }
 
 export default function todos(state = initialState, action) {
@@ -20,7 +19,11 @@ export default function todos(state = initialState, action) {
         ...state,
         todos: [
           ...state.todos,
-          action.payload
+          {
+            id: uuidv4(),
+            title: action.payload,
+            isCompleted: false
+          }
         ]
       };
 
@@ -30,34 +33,35 @@ export default function todos(state = initialState, action) {
         todos: state.todos.filter(todo =>
           todo.id !== action.payload
         )
-      }
+      };
 
-    case COMPLETE_TODO:
+    case UPDATE_TODO:
       return {
         ...state,
         todos: state.todos.map(todo => {
-          if (todo.id === action.payload) {
-            return { ...todo, isCompleted: !todo.isCompleted };
+          if (todo.id === action.payload.id) {
+            return action.payload;
           }
           return todo;
         })
-      }
-    
-    case COMPLETE_ALL_TODOS:
-      const areAllCompleted = state.every(todo => todo.isCompleted);
+      };
+
+    case COMPLETE_ALL_TODOS: {
+      const areAllCompleted = state.todos.every(todo => todo.isCompleted);
       return {
         ...state,
         todos: state.todos.map(todo => ({
-          ...todo, 
+          ...todo,
           isCompleted: !areAllCompleted
         }))
-      }
+      };
+    }
 
     case CLEAR_COMPLETED:
       return {
         ...state,
         todos: state.todos.filter(todo => !todo.isCompleted)
-      }
+      };
 
     default:
       return state;

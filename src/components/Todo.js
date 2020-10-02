@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import classnames from 'classnames'
+import { connect } from 'react-redux';
+
+import { updateTodo, deleteTodo } from "../store/todos/actions"
 
 class Todo extends Component {
   constructor(props) {
@@ -9,20 +12,20 @@ class Todo extends Component {
     };
   }
 
-  //Начать отсюда, добавить connect, import action 
   handleDoneTodo = () => {
-    this.props.updateTodo({
+    const updatedTodo = {
       ...this.props.todo,
       isCompleted: !this.props.todo.isCompleted
-    });
+    };
+    this.props.updateTodo(updatedTodo);
   }
 
   handleDelete = () => {
-    this.props.deleteTodo(this.props.todo);
+    this.props.deleteTodo(this.props.todo.id);
   }
 
   handleSetEditedTodo = () => {
-    this.props.setEditedTodo(this.props.todo.id)
+    this.props.setEditedTodo(this.props.todo.id);
   }
 
   handleChangeTodo = (event) => {
@@ -52,15 +55,13 @@ class Todo extends Component {
 
   render() {
     const { todo, isEdited } = this.props;
-    const itemClass = classnames({
-      'todo-item': true,
+    const itemClass = classnames('todo-item', {
       'completed': todo.isCompleted,
       'edited': isEdited
     });
-    const switchClass = classnames({
-      'switch': true,
+    const switchClass = classnames('switch', {
       'marked': todo.isCompleted
-    })
+    });
 
     return (
       <li
@@ -75,9 +76,7 @@ class Todo extends Component {
         />
 
         {!isEdited && (
-          <p
-            className="todo-text"
-          >
+          <p className="todo-text">
             {todo.title}
           </p>
         )}
@@ -95,7 +94,7 @@ class Todo extends Component {
             />
           </form>
         )}
-        
+
         <div
           className="close-todo"
           onClick={this.handleDelete}
@@ -107,4 +106,9 @@ class Todo extends Component {
   }
 }
 
-export default Todo;
+const mapDispatchToProps = dispatch => ({
+  updateTodo: (todo) => dispatch(updateTodo(todo)),
+  deleteTodo: (id) => dispatch(deleteTodo(id))
+});
+
+export default connect(null, mapDispatchToProps)(Todo);

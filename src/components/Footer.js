@@ -1,4 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
+import { setFilter } from "../store/filter/actions";
+import { visibilityFilters } from "../store/constants/visibilityFilters";
 import FilterButton from './FilterButton';
 
 function Footer(props) {
@@ -43,15 +47,19 @@ function Footer(props) {
 
 const filterButtons = [
   {
-    value: 'all',
+    value: visibilityFilters.SHOW_ALL,
     label: 'All'
   }, {
-    value: 'active',
+    value: visibilityFilters.SHOW_ACTIVE,
     label: 'Active'
   }, {
-    value: 'completed',
+    value: visibilityFilters.SHOW_COMPLETED,
     label: 'Completed'
   }
 ];
 
-export default Footer;
+const mapDispatchToProps = dispatch => ({
+  setFilter: (filter) => dispatch(setFilter(filter))
+});
+
+export default connect(null, mapDispatchToProps)(Footer);

@@ -1,10 +1,9 @@
 import React from 'react';
-import classnames from 'classnames'
+import classnames from 'classnames';
 
 function FilterButton(props) {
   const { value, children, setFilter, filter } = props;
-  const btnClass = classnames({
-    'footer__btn': true,
+  const btnClass = classnames('footer__btn', {
     'active': filter === value
   })
 

@@ -1,11 +1,8 @@
-import uuidv4 from 'uuid/dist/v4'
-
-import {
-  SET_FILTER
-} from '../constants/actionTypes'
+import { SET_FILTER } from '../actionTypes/actionTypes'
+import { visibilityFilters } from '../constants/visibilityFilters';
 
 const initialState = {
-  visibleFilter: 'all'
+  filter: visibilityFilters.SHOW_ALL
 }
 
 export default function filter(state = initialState, action) {
@@ -13,7 +10,7 @@ export default function filter(state = initialState, action) {
     case SET_FILTER:
       return {
         ...state,
-        visibleFilter: action.payload
+        filter: action.payload
       }
     default:
       return state;

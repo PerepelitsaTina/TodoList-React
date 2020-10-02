@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import uuidv4 from 'uuid/dist/v4'
 import { connect } from 'react-redux';
-import { createTodo } from "../actions/index"
+
+import { createTodo } from "../store/todos/actions"
 
 class CreateTodo extends Component {
   state = {
@@ -16,14 +16,12 @@ class CreateTodo extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    const newTodo = {
-      id: uuidv4(),
-      title: this.state.value,
-      isCompleted: false
-    };
     if (this.state.value.length > 0) {
-      this.props.createTodo(newTodo);
+      this.props.createTodo(this.state.value);
     }
+    this.setState({
+      value: ''
+    });
   }
 
   render() {
@@ -44,12 +42,8 @@ class CreateTodo extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  todos: state.todos_store.todos
-});
-
 const mapDispatchToProps = dispatch => ({
-  createTodo: (todo) => dispatch(createTodo(todo))
+  createTodo: (title) => dispatch(createTodo(title))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateTodo);
+export default connect(null, mapDispatchToProps)(CreateTodo);
