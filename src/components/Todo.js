@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import classnames from 'classnames'
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import { updateTodo, deleteTodo } from "../store/todos/actions"
 
@@ -106,9 +107,21 @@ class Todo extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   updateTodo: (todo) => dispatch(updateTodo(todo)),
   deleteTodo: (id) => dispatch(deleteTodo(id))
 });
 
 export default connect(null, mapDispatchToProps)(Todo);
+
+Todo.propTypes = {
+  todo: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    isCompleted: PropTypes.bool
+  }),
+  updateTodo: PropTypes.func.isRequired,
+  deleteTodo: PropTypes.func.isRequired,
+  isEdited: PropTypes.bool.isRequired,
+  setEditedTodo: PropTypes.func.isRequired
+}

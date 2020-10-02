@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { createTodo } from '../store/todos/actions'
 
-import { createTodo } from "../store/todos/actions"
 
 class CreateTodo extends Component {
   state = {
-    value: '',
+    value: ''
   }
 
   handleChange = (event) => {
@@ -42,8 +43,12 @@ class CreateTodo extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   createTodo: (title) => dispatch(createTodo(title))
 });
 
 export default connect(null, mapDispatchToProps)(CreateTodo);
+
+CreateTodo.propTypes = {
+  createTodo: PropTypes.func.isRequired
+};

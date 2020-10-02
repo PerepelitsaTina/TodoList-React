@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import { setFilter } from "../store/filter/actions";
 import { visibilityFilters } from "../store/constants/visibilityFilters";
@@ -63,3 +64,11 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default connect(null, mapDispatchToProps)(Footer);
+
+Footer.propTypes = {
+  setFilter: PropTypes.func.isRequired,
+  activeCounter: PropTypes.number.isRequired,
+  completedCounter: PropTypes.number.isRequired,
+  filter: PropTypes.string.isRequired,
+  handleClearCompleted: PropTypes.func.isRequired
+}

@@ -1,5 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
 
 function FilterButton(props) {
   const { value, children, setFilter, filter } = props;
@@ -18,3 +19,10 @@ function FilterButton(props) {
 }
 
 export default FilterButton;
+
+FilterButton.propTypes = {
+  value: PropTypes.string.isRequired,
+  children: PropTypes.element.isRequired,
+  setFilter: PropTypes.func.isRequired,
+  filter: PropTypes.string.isRequired
+}
