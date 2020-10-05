@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { createTodo } from '../store/todos/actions'
-
+import { createTodo } from '../store/todos/actions';
 
 class CreateTodo extends Component {
   state = {
@@ -50,5 +49,9 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(null, mapDispatchToProps)(CreateTodo);
 
 CreateTodo.propTypes = {
-  createTodo: PropTypes.func.isRequired
+  createTodo: PropTypes.func
+};
+
+CreateTodo.defaultProps = {
+  createTodo: () => null
 };

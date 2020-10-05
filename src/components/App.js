@@ -1,16 +1,14 @@
 import React from 'react';
 import Todos from './Todos';
 
-class App extends React.Component {
-  render() {
-    return (
-      <div>
-        <p className="head-title">todolist</p>
+function App() {
+  return (
+    <div>
+      <p className="head-title">todolist</p>
 
-        <Todos />
-      </div>
-    );
-  }
+      <Todos />
+    </div>
+  );
 }
 
 export default App;

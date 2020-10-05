@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { setFilter } from "../store/filter/actions";
-import { visibilityFilters } from "../store/constants/visibilityFilters";
+import { setFilter } from '../store/filter/actions';
+import { visibilityFilters } from '../store/constants/visibilityFilters';
 import FilterButton from './FilterButton';
 
 function Footer(props) {
@@ -59,7 +59,7 @@ const filterButtons = [
   }
 ];
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   setFilter: (filter) => dispatch(setFilter(filter))
 });
 
@@ -71,4 +71,4 @@ Footer.propTypes = {
   completedCounter: PropTypes.number.isRequired,
   filter: PropTypes.string.isRequired,
   handleClearCompleted: PropTypes.func.isRequired
-}
+};

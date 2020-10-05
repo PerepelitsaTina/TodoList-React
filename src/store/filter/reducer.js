@@ -1,9 +1,9 @@
-import { SET_FILTER } from '../actionTypes/actionTypes'
+import { SET_FILTER } from './actionTypes';
 import { visibilityFilters } from '../constants/visibilityFilters';
 
 const initialState = {
   filter: visibilityFilters.SHOW_ALL
-}
+};
 
 export default function filter(state = initialState, action) {
   switch (action.type) {
@@ -11,7 +11,7 @@ export default function filter(state = initialState, action) {
       return {
         ...state,
         filter: action.payload
-      }
+      };
     default:
       return state;
   }

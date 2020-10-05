@@ -1,24 +1,26 @@
-import * as actionTypes from '../actionTypes/actionTypes'
+import {
+  CREATE_TODO,
+  DELETE_TODO,
+  UPDATE_TODO,
+  COMPLETE_ALL_TODOS,
+  CLEAR_COMPLETED
+} from './actionTypes';
 
-export const createTodo = (todo) => ({
-    type: actionTypes.CREATE_TODO,
-    payload: todo
-});
-export const editTodo = (id, title) => ({
-    type: actionTypes.EDIT_TODO,
-    payload: { id, title }
+export const createTodo = (title) => ({
+  type: CREATE_TODO,
+  payload: title
 });
 export const deleteTodo = (id) => ({
-    type: actionTypes.DELETE_TODO,
-    payload: id
+  type: DELETE_TODO,
+  payload: id
 });
 export const updateTodo = (todo) => ({
-    type: actionTypes.UPDATE_TODO,
-    payload: todo
+  type: UPDATE_TODO,
+  payload: todo
 });
 export const completeAllTodos = () => ({
-    type: actionTypes.COMPLETE_ALL_TODOS
+  type: COMPLETE_ALL_TODOS
 });
 export const clearCompleted = () => ({
-    type: actionTypes.CLEAR_COMPLETED
+  type: CLEAR_COMPLETED
 });

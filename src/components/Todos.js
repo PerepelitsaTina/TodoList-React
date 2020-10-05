@@ -1,12 +1,14 @@
 import classnames from 'classnames';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-import { clearCompleted, completeAllTodos } from "../store/todos/actions";
-import { showFilteredTodos } from "../store/selectors/index";
 import CreateTodo from './CreateTodo';
 import Footer from './Footer';
 import Todo from './Todo';
+
+import { clearCompleted, completeAllTodos } from '../store/todos/actions';
+import { showFilteredTodos } from '../store/selectors/index';
 
 class Todos extends Component {
   state = {
@@ -17,10 +19,10 @@ class Todos extends Component {
     this.setState({ editedTodo });
   }
 
-  countCompleted = () => {
+  getCounters = () => {
     let completedCounter = 0;
     this.props.todos.forEach((todo) => {
-      if (todo.isCompleted) { completedCounter++; };
+      if (todo.isCompleted) { completedCounter++; }
     });
     return {
       completedCounter,
@@ -29,11 +31,11 @@ class Todos extends Component {
   }
 
   render() {
-    const { activeCounter, completedCounter } = this.countCompleted();
+    const { activeCounter, completedCounter } = this.getCounters();
     const switchClassNames = classnames(
       'main-switch',
       {
-        'marked': this.props.todos.length === completedCounter && this.props.todos.length !== 0
+        marked: this.props.todos.length === completedCounter
       }
     );
 
@@ -51,7 +53,7 @@ class Todos extends Component {
         </div>
 
         <ul>
-          {this.props.filteredTodos.map(todo => (
+          {this.props.filteredTodos.map((todo) => (
             <Todo
               todo={todo}
               key={todo.id}
@@ -74,15 +76,24 @@ class Todos extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  todos: state.todosStore.todos,
-  filteredTodos: showFilteredTodos(state),
-  filter: state.filterStore.filter
-});
+Todos.propTypes = {
+  todos: PropTypes.array.isRequired,
+  completeAllTodos: PropTypes.func.isRequired,
+  clearCompleted: PropTypes.func.isRequired,
+  filteredTodos: PropTypes.array.isRequired,
+  filter: PropTypes.string.isRequired
+};
 
-const mapDispatchToProps = dispatch => ({
-  completeAllTodos: () => dispatch(completeAllTodos()),
-  clearCompleted: () => dispatch(clearCompleted())
-});
+const connectFunction = connect(
+  (state) => ({
+    todos: state.todosStore.todos,
+    filteredTodos: showFilteredTodos(state),
+    filter: state.filterStore.filter
+  }),
+  {
+    completeAllTodos,
+    clearCompleted
+  }
+);
 
-export default connect(mapStateToProps, mapDispatchToProps)(Todos);
+export default connectFunction(Todos);

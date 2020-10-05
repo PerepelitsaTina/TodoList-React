@@ -5,8 +5,8 @@ import PropTypes from 'prop-types';
 function FilterButton(props) {
   const { value, children, setFilter, filter } = props;
   const btnClass = classnames('footer__btn', {
-    'active': filter === value
-  })
+    active: filter === value
+  });
 
   return (
     <button
@@ -25,4 +25,4 @@ FilterButton.propTypes = {
   children: PropTypes.element.isRequired,
   setFilter: PropTypes.func.isRequired,
   filter: PropTypes.string.isRequired
-}
+};

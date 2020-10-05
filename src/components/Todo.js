@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import classnames from 'classnames'
+import classnames from 'classnames';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { updateTodo, deleteTodo } from "../store/todos/actions"
+import { updateTodo, deleteTodo } from '../store/todos/actions';
 
 class Todo extends Component {
   constructor(props) {
@@ -57,11 +57,11 @@ class Todo extends Component {
   render() {
     const { todo, isEdited } = this.props;
     const itemClass = classnames('todo-item', {
-      'completed': todo.isCompleted,
-      'edited': isEdited
+      completed: todo.isCompleted,
+      edited: isEdited
     });
     const switchClass = classnames('switch', {
-      'marked': todo.isCompleted
+      marked: todo.isCompleted
     });
 
     return (
@@ -73,7 +73,7 @@ class Todo extends Component {
         <div
           className={switchClass}
           onClick={this.handleDoneTodo}
-          onDoubleClick={(e) => { e.stopPropagation() }}
+          onDoubleClick={(e) => { e.stopPropagation(); }}
         />
 
         {!isEdited && (
@@ -85,7 +85,7 @@ class Todo extends Component {
         {isEdited && (
           <form onSubmit={this.handleSubmitChanges}>
             <input
-              onClick={(e) => { e.stopPropagation() }}
+              onClick={(e) => { e.stopPropagation(); }}
               className="editing-todo"
               autoFocus
               type='text'
@@ -119,9 +119,9 @@ Todo.propTypes = {
     id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     isCompleted: PropTypes.bool
-  }),
+  }).isRequired,
   updateTodo: PropTypes.func.isRequired,
   deleteTodo: PropTypes.func.isRequired,
   isEdited: PropTypes.bool.isRequired,
   setEditedTodo: PropTypes.func.isRequired
-}
+};
